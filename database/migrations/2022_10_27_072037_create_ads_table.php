@@ -21,7 +21,7 @@ class CreateAdsTable extends Migration
             $table->foreignId('user_id');
             $table->string('description');
             $table->string('tr_type');
-            $table->currency('price');
+            $table->integer('price');
             $table->timestamps();
         });
     }
