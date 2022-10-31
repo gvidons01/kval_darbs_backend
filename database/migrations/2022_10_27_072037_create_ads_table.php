@@ -19,7 +19,7 @@ class CreateAdsTable extends Migration
             $table->foreignId('category_id');
             $table->foreignId('subcat_id');
             $table->foreignId('user_id');
-            $table->string('description');
+            $table->text('description');
             $table->string('tr_type');
             $table->integer('price');
             $table->timestamps();

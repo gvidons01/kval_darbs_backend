@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ad extends Model
 {
     use HasFactory;
-    private $fillable = [
+    protected $fillable = [
       'price',
       'description',
       'tr_type'
