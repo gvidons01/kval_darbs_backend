@@ -19,7 +19,7 @@ class CreateAdsTable extends Migration
             $table->foreignId('group_id');
             $table->foreignId('category_id');
             $table->foreignId('subcat_id');
-            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignId('user_id');
             $table->text('description');
             $table->string('tr_type');
             $table->integer('price');

@@ -17,9 +17,9 @@ class CreateReportsTable extends Migration
     public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Ad::class)->constrained();
+            $table->increments('id');
+            $table->foreignId('user_id');
+            $table->foreignId('ad_id');
             $table->string('reason');
             $table->timestamp('created_at')->useCurrent();
         });
