@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 class CreateAdsTable extends Migration
 {
@@ -14,11 +15,11 @@ class CreateAdsTable extends Migration
     public function up()
     {
         Schema::create('ads', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->foreignId('group_id');
             $table->foreignId('category_id');
             $table->foreignId('subcat_id');
-            $table->foreignId('user_id');
+            $table->foreignIdFor(User::class)->constrained();
             $table->text('description');
             $table->string('tr_type');
             $table->integer('price');

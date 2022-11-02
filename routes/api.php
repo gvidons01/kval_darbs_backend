@@ -17,6 +17,20 @@ use App\Http\Resources\AdResource;
 |
 */
 
+Route::get('/ad/{id}', function($id){
+  return new AdResource(Ad::findOrFail($id));
+});
+
+Route::get('/ads', function(){
+  return AdResource::collection(Ad::all());
+});
+
+Route::put('/ad/{id}', [AdController::class, 'update']);
+
+Route::delete('/ad/{id}', [AdController::class, 'destroy']);
+
+Route::post('/ads', [AdController::class, 'store']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

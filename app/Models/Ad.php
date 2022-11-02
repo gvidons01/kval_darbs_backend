@@ -14,5 +14,5 @@ class Ad extends Model
       'tr_type'
     ];
 
-    private $table = 'ads';
+    protected $table = 'ads';
 }
