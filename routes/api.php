@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Ad;
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Resources\AdResource;
 
 /*
@@ -16,6 +17,9 @@ use App\Http\Resources\AdResource;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('/auth/register', [AuthController::class, 'createUser']);
+Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
 Route::get('/ad/{id}', function($id){
   return new AdResource(Ad::findOrFail($id));
