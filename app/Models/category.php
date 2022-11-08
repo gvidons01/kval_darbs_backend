@@ -9,5 +9,5 @@ class category extends Model
 {
     use HasFactory;
 
-    private $table = 'categories';
+    protected $table = 'categories';
 }

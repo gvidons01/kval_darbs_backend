@@ -9,5 +9,5 @@ class group extends Model
 {
     use HasFactory;
 
-    private $table = 'groups';
+    protected $table = 'groups';
 }

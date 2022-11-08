@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use app\Models\group;
 use app\Models\category;
+use app\Models\User;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -17,8 +18,9 @@ class DatabaseSeeder extends Seeder
       $this->call([
         GroupSeeder::class,
         CategorySeeder::class,
+        //UserSeeder::class,
       ]);
-        // \App\Models\User::factory(10)->create();
+      \App\Models\User::factory(10)->create();
 
     }
 }

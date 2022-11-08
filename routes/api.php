@@ -3,9 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Ad;
+use App\Models\group;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Resources\AdResource;
+use App\Http\Resources\GroupResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,10 @@ Route::get('/ad/{id}', function($id){
 
 Route::get('/ads', function(){
   return AdResource::collection(Ad::all());
+});
+
+Route::get('/groups', function(){
+  return GroupResource::collection(group::all());
 });
 
 Route::put('/ad/{id}', [AdController::class, 'update']);

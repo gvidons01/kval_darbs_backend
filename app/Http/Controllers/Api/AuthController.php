@@ -25,7 +25,8 @@ class AuthController extends Controller
           'fname' => 'required',
           'lname' => 'required',
           'email' => 'required|email|unique:users,email',
-          'password' => 'required'
+          'password' => 'required',
+          'repeat_password' => 'required|same:password',
         ]);
 
         if($validateUser->fails()){
@@ -81,7 +82,7 @@ class AuthController extends Controller
         if(!Auth::attempt($request->only(['email', 'password']))){
             return response()->json([
                 'status' => false,
-                'message' => 'Email & Password does not match with our record.',
+                'message' => 'Wrong email or password',
            ], 401);
         }
 

@@ -3,7 +3,7 @@
 
 
 CREATE TABLE `users` (
-    `ID` bigint  NOT NULL ,
+    `ID` bigint unsigned  NOT NULL ,
     `email` varchar(90)  NOT NULL ,
     `email_verified_at` timestamp  NOT NULL ,
     `password` varchar(255)  NOT NULL ,
@@ -22,11 +22,11 @@ CREATE TABLE `users` (
 );
 
 CREATE TABLE `ads` (
-    `ID` bigint  NOT NULL ,
-    `user_id` bigint  NOT NULL ,
-    `group_id` int  NOT NULL ,
-    `category_id` int  NOT NULL ,
-    `subcat_id` int  NOT NULL ,
+    `ID` bigint unsigned  NOT NULL ,
+    `user_id` bigint unsigned  NOT NULL ,
+    `group_id` int unsigned  NOT NULL ,
+    `category_id` int unsigned  NOT NULL ,
+    `subcat_id` int unsigned  NOT NULL ,
     `price` int  NOT NULL ,
     `description` text  NOT NULL ,
     `tr_type` varchar(20)  NOT NULL ,
@@ -39,9 +39,9 @@ CREATE TABLE `ads` (
 );
 
 CREATE TABLE `reports` (
-    `ID` bigint  NOT NULL ,
-    `ad_id` bigint  NOT NULL ,
-    `user_id` bigint  NOT NULL ,
+    `ID` bigint unsigned  NOT NULL ,
+    `ad_id` bigint unsigned  NOT NULL ,
+    `user_id` bigint unsigned  NOT NULL ,
     `reason` varchar(255)  NOT NULL ,
     `created_at` timestamp  NOT NULL ,
     PRIMARY KEY (
@@ -50,7 +50,7 @@ CREATE TABLE `reports` (
 );
 
 CREATE TABLE `groups` (
-    `ID` int  NOT NULL ,
+    `ID` int unsigned  NOT NULL ,
     `group_name` varchar(30)  NOT NULL ,
     `image` longblob  NOT NULL ,
     PRIMARY KEY (
@@ -59,9 +59,9 @@ CREATE TABLE `groups` (
 );
 
 CREATE TABLE `categories` (
-    `ID` int  NOT NULL ,
+    `ID` int unsigned  NOT NULL ,
     `category_name` varchar(60)  NOT NULL ,
-    `group_id` int  NOT NULL ,
+    `group_id` int unsigned  NOT NULL ,
     `image` longblob  NOT NULL ,
     PRIMARY KEY (
         `ID`
@@ -69,8 +69,8 @@ CREATE TABLE `categories` (
 );
 
 CREATE TABLE `subcategories` (
-    `ID` int  NOT NULL ,
-    `category_id` int  NOT NULL ,
+    `ID` int unsigned  NOT NULL ,
+    `category_id` int unsigned  NOT NULL ,
     `sub-category` varchar(60)  NOT NULL ,
     PRIMARY KEY (
         `ID`
@@ -78,8 +78,8 @@ CREATE TABLE `subcategories` (
 );
 
 CREATE TABLE `attributes` (
-    `ID` int  NOT NULL ,
-    `subcat_id` int  NOT NULL ,
+    `ID` int unsigned  NOT NULL ,
+    `subcat_id` int unsigned  NOT NULL ,
     `attribute` varchar(40)  NOT NULL ,
     `data_type` varchar(40)  NOT NULL ,
     PRIMARY KEY (
@@ -88,13 +88,13 @@ CREATE TABLE `attributes` (
 );
 
 CREATE TABLE `locations` (
-    `ad_id` bigint  NOT NULL ,
+    `ad_id` bigint unsigned  NOT NULL ,
     `loc_latitude` varchar(255)  NOT NULL ,
-    `loc_longitude` varchar(255)  NOT NULL 
+    `loc_longitude` varchar(255)  NOT NULL
 );
 
 CREATE TABLE `equipment` (
-    `ad_id` bigint  NOT NULL ,
+    `ad_id` bigint unsigned  NOT NULL ,
     `AWD` boolean  NOT NULL ,
     `4WD` boolean  NOT NULL ,
     `pwr_steering` boolean  NOT NULL ,
@@ -103,12 +103,12 @@ CREATE TABLE `equipment` (
     `ABS` boolean  NOT NULL ,
     `ESP` boolean  NOT NULL ,
     `parking_sens` boolean  NOT NULL ,
-    `cruise_ctrl` boolean  NOT NULL 
+    `cruise_ctrl` boolean  NOT NULL
 );
 
 CREATE TABLE `images` (
-    `ID` int  NOT NULL ,
-    `ad_id` bigint  NOT NULL ,
+    `ID` int unsigned  NOT NULL ,
+    `ad_id` bigint unsigned  NOT NULL ,
     `image` longblob  NOT NULL ,
     PRIMARY KEY (
         `ID`
@@ -150,4 +150,3 @@ REFERENCES `ads` (`ID`);
 
 ALTER TABLE `images` ADD CONSTRAINT `fk_images_ad_id` FOREIGN KEY(`ad_id`)
 REFERENCES `ads` (`ID`);
-
