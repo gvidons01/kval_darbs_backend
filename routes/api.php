@@ -31,15 +31,15 @@ Route::get('/ads', function(){
   return AdResource::collection(Ad::all());
 });
 
-Route::get('/groups', function(){
-  return GroupResource::collection(group::all());
-});
-
 Route::put('/ad/{id}', [AdController::class, 'update']);
 
 Route::delete('/ad/{id}', [AdController::class, 'destroy']);
 
 Route::post('/ads', [AdController::class, 'store']);
+
+Route::get('/groups', function(){
+  return GroupResource::collection(group::all());
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
