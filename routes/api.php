@@ -41,6 +41,10 @@ Route::get('/groups', function(){
   return GroupResource::collection(group::all());
 });
 
+Route::get('/group/{id}', function($id){
+  return new GroupResource(group::findOrFail($id));
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
