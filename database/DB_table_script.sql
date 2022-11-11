@@ -3,7 +3,7 @@
 
 
 CREATE TABLE `users` (
-    `ID` bigint unsigned  NOT NULL ,
+    `ID` bigint unsigned  NOT NULL AUTO_INCREMENT ,
     `email` varchar(90)  NOT NULL ,
     `email_verified_at` timestamp  NOT NULL ,
     `password` varchar(255)  NOT NULL ,
@@ -22,7 +22,7 @@ CREATE TABLE `users` (
 );
 
 CREATE TABLE `ads` (
-    `ID` bigint unsigned  NOT NULL ,
+    `ID` bigint unsigned  NOT NULL AUTO_INCREMENT ,
     `user_id` bigint unsigned  NOT NULL ,
     `group_id` int unsigned  NOT NULL ,
     `category_id` int unsigned  NOT NULL ,
@@ -39,7 +39,7 @@ CREATE TABLE `ads` (
 );
 
 CREATE TABLE `reports` (
-    `ID` bigint unsigned  NOT NULL ,
+    `ID` bigint unsigned  NOT NULL AUTO_INCREMENT ,
     `ad_id` bigint unsigned  NOT NULL ,
     `user_id` bigint unsigned  NOT NULL ,
     `reason` varchar(255)  NOT NULL ,
@@ -50,35 +50,38 @@ CREATE TABLE `reports` (
 );
 
 CREATE TABLE `groups` (
-    `ID` int unsigned  NOT NULL ,
+    `ID` int unsigned  NOT NULL AUTO_INCREMENT ,
     `group_name` varchar(30)  NOT NULL ,
     `image` longblob  NOT NULL ,
+    `url` varchar(30) NOT NULL ,
     PRIMARY KEY (
         `ID`
     )
 );
 
 CREATE TABLE `categories` (
-    `ID` int unsigned  NOT NULL ,
+    `ID` int unsigned  NOT NULL AUTO_INCREMENT ,
     `category_name` varchar(60)  NOT NULL ,
     `group_id` int unsigned  NOT NULL ,
     `image` longblob  NOT NULL ,
+    `url` varchar(30) NOT NULL ,
     PRIMARY KEY (
         `ID`
     )
 );
 
 CREATE TABLE `subcategories` (
-    `ID` int unsigned  NOT NULL ,
+    `ID` int unsigned  NOT NULL AUTO_INCREMENT ,
     `category_id` int unsigned  NOT NULL ,
     `sub-category` varchar(60)  NOT NULL ,
+    `url` varchar(30) NOT NULL ,
     PRIMARY KEY (
         `ID`
     )
 );
 
 CREATE TABLE `attributes` (
-    `ID` int unsigned  NOT NULL ,
+    `ID` int unsigned  NOT NULL AUTO_INCREMENT ,
     `subcat_id` int unsigned  NOT NULL ,
     `attribute` varchar(40)  NOT NULL ,
     `data_type` varchar(40)  NOT NULL ,
@@ -107,7 +110,7 @@ CREATE TABLE `equipment` (
 );
 
 CREATE TABLE `images` (
-    `ID` int unsigned  NOT NULL ,
+    `ID` int unsigned  NOT NULL AUTO_INCREMENT ,
     `ad_id` bigint unsigned  NOT NULL ,
     `image` longblob  NOT NULL ,
     PRIMARY KEY (

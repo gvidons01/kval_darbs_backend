@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->boolean('is_admin')->default(false);
             $table->boolean('is_blocked')->default(false);
+            $table->string('phone_no', 8);
             $table->rememberToken();
             $table->timestamps();
         });

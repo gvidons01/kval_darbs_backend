@@ -25,6 +25,11 @@ class AdController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+          'price' => 'required',
+          'description' => 'required',
+          'tr_type' => 'required',
+        ]);
         return Ad::create($request->all());
     }
 
@@ -52,6 +57,7 @@ class AdController extends Controller
           $ad = Ad::find($id);
           $ad->price = $request->price;
           $ad->description = $request->description;
+          $ad->tr_type = $request->tr_type;
 
           $ad->save();
           return response()->json([
@@ -86,5 +92,10 @@ class AdController extends Controller
             "message" => "Ad not found"
           ], 404);
         }
+    }
+
+    public function search($description)
+    {
+      return Ad::where('description', 'like', '%'.$description.'%')->get();
     }
 }

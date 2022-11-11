@@ -2,10 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Ad;
 use App\Models\group;
+use App\Models\Ad;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\GroupController;
 use App\Http\Resources\AdResource;
 use App\Http\Resources\GroupResource;
 
@@ -20,22 +21,17 @@ use App\Http\Resources\GroupResource;
 |
 */
 
-Route::post('/auth/register', [AuthController::class, 'createUser']);
-Route::post('/auth/login', [AuthController::class, 'loginUser']);
+//public routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/ad/{id}', function($id){
-  return new AdResource(Ad::findOrFail($id));
-});
+//Route::resource('ads', AdController::class);
 
-Route::get('/ads', function(){
-  return AdResource::collection(Ad::all());
-});
+Route::get('/ad/{id}', [AdController::class, 'show']);
 
-Route::put('/ad/{id}', [AdController::class, 'update']);
+Route::get('/ads', [AdController::class, 'index']);
 
-Route::delete('/ad/{id}', [AdController::class, 'destroy']);
-
-Route::post('/ads', [AdController::class, 'store']);
+Route::get('/ads/search/{description}', [AdController::class, 'search']);
 
 Route::get('/groups', function(){
   return GroupResource::collection(group::all());
@@ -45,6 +41,13 @@ Route::get('/group/{id}', function($id){
   return new GroupResource(group::findOrFail($id));
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//protected routes (only authenticated users!)
+Route::group(['middleware' => ['auth:sanctum']], function () {
+  Route::post('/ads', [AdController::class, 'store']);
+  Route::put('/ad/{id}', [AdController::class, 'update']);
+  Route::delete('/ad/{id}', [AdController::class, 'destroy']);
+
+  Route::post('/logout', [AuthController::class, 'logout']);
+  //route to user's profile, update or delete user profile.
+  //report routes
 });

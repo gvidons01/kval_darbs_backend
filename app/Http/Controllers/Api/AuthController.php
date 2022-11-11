@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,16 +18,16 @@ class AuthController extends Controller
     * @return user
     */
 
-    public function createUser(Request $request){
+    public function register(Request $request){
       try{
         //Validated
         $validateUser = Validator::make($request->all(),
         [
-          'fname' => 'required',
-          'lname' => 'required',
+          'fname' => 'required|string',
+          'lname' => 'required|string',
           'email' => 'required|email|unique:users,email',
-          'password' => 'required',
-          'repeat_password' => 'required|same:password',
+          'phone_no'=> 'required|string',
+          'password' => 'required|string|confirmed',
         ]);
 
         if($validateUser->fails()){
@@ -41,13 +42,15 @@ class AuthController extends Controller
             'fname' => $request->fname,
             'lname' => $request->lname,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'phone_no' => $request->phone_no,
+            'password' => bcrypt($request->password)
         ]);
 
         return response()->json([
             'status' => true,
             'message' => 'User Created Successfully',
-            'token' => $user->createToken("API TOKEN")->plainTextToken
+            'user' => $user,
+            'token' => $user->createToken('API TOKEN')->plainTextToken
         ], 200);
       }
       catch (\Throwable $th) {
@@ -63,12 +66,12 @@ class AuthController extends Controller
     * @param Request $request
     * @return User
     */
-   public function loginUser(Request $request){
+   public function login(Request $request){
       try {
         $validateUser = Validator::make($request->all(),
         [
             'email' => 'required|email',
-           'password' => 'required'
+           'password' => 'required|string'
         ]);
 
         if($validateUser->fails()){
@@ -101,6 +104,14 @@ class AuthController extends Controller
             'message' => $th->getMessage()
          ], 500);
        }
+   }
+
+   //Log out the user
+   public function logout(Request $request){
+    auth()->user()->tokens()->delete();
+    return[
+      'message' => 'logged out'
+    ];
    }
 
 }

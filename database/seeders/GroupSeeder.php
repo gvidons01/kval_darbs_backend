@@ -14,54 +14,54 @@ class GroupSeeder extends Seeder
     public function run()
     {
       \DB::table('groups')->insert([
-        'ID' => 1,
         'group_name' => 'Transports',
         'image' => file_get_contents("images/groups/car.png"),
+        'url' => 'vehicles',
       ]);
       \DB::table('groups')->insert([
-        'ID' => 2,
         'group_name' => 'Nekustamais īpašums',
         'image' => file_get_contents("images/groups/home.png"),
+        'url' => 'real-estate',
       ]);
       \DB::table('groups')->insert([
-        'ID' => 3,
         'group_name' => 'Elektrotehnika',
         'image' => file_get_contents("images/groups/responsive.png"),
+        'url' => 'electronics',
       ]);
       \DB::table('groups')->insert([
-        'ID' => 4,
         'group_name' => 'Apģērbs',
         'image' => file_get_contents("images/groups/tshirt.png"),
+        'url' => 'clothing',
       ]);
       \DB::table('groups')->insert([
-        'ID' => 5,
         'group_name' => 'Mājai',
         'image' => file_get_contents("images/groups/shelf.png"),
+        'url' => 'for-home',
       ]);
       \DB::table('groups')->insert([
-        'ID' => 6,
         'group_name' => 'Bērniem',
         'image' => file_get_contents("images/groups/baby-boy.png"),
+        'url' => 'for-kids',
       ]);
       \DB::table('groups')->insert([
-        'ID' => 7,
         'group_name' => 'Atpūtai/hobijiem',
         'image' => file_get_contents("images/groups/hiking.png"),
+        'url' => 'entertainment',
       ]);
       \DB::table('groups')->insert([
-        'ID' => 8,
         'group_name' => 'Lauksaimniecībai',
         'image' => file_get_contents("images/groups/tractor.png"),
+        'url' => 'agriculture',
       ]);
       \DB::table('groups')->insert([
-        'ID' => 9,
         'group_name' => 'Celtniecībai',
         'image' => file_get_contents("images/groups/helmet.png"),
+        'url' => 'construction',
       ]);
       \DB::table('groups')->insert([
-        'ID' => 10,
         'group_name' => 'Dārzam',
         'image' => file_get_contents("images/groups/gardening.png"),
+        'url' => 'gardening',
       ]);
     }
 }
