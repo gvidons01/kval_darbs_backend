@@ -4,11 +4,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\group;
 use App\Models\Ad;
+use App\Models\category;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Resources\AdResource;
 use App\Http\Resources\GroupResource;
+use App\Http\Resources\CategoryResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +40,10 @@ Route::get('/groups', function(){
 });
 
 Route::get('/group/{id}', function($id){
-  return new GroupResource(group::findOrFail($id));
+  return [
+    new GroupResource(group::findOrFail($id)),
+    CategoryResource::collection(category::all()->where('group_id', '=', $id))
+  ];
 });
 
 //protected routes (only authenticated users!)

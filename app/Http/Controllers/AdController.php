@@ -59,11 +59,14 @@ class AdController extends Controller
           $ad->description = $request->description;
           $ad->tr_type = $request->tr_type;
 
-          $ad->save();
-          return response()->json([
-            "message" => "Ad updated successfully"
-          ], 200);
+          return[
+            $ad->save(),
+            response()->json([
+              "message" => "Ad updated successfully"
+            ], 200)
+          ];
         }
+
         else{
           return response()->json([
             "message" => "Ad not found"
