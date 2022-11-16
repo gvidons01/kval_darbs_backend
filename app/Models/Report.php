@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     use HasFactory;
-    private $fillable = [
-      'reason'
-    ];
+    protected $guarded = [];
 
-    private $table = 'reports';
+    protected $table = 'reports';
 }

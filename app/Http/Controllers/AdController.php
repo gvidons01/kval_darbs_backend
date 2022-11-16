@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ad;
+use App\Models\Report;
 
 class AdController extends Controller
 {
@@ -26,9 +27,9 @@ class AdController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-          'price' => 'required',
-          'description' => 'required',
-          'tr_type' => 'required',
+          'price' => 'required|string',
+          'description' => 'required|string',
+          'tr_type' => 'required|integer',
         ]);
         return Ad::create($request->all());
     }
@@ -53,18 +54,20 @@ class AdController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(Ad::where('id', $id)->exists()){
-          $ad = Ad::find($id);
-          $ad->price = $request->price;
-          $ad->description = $request->description;
-          $ad->tr_type = $request->tr_type;
-
-          return[
-            $ad->save(),
+        if(Ad::where('ID', '=', $id)->exists()){
+          $request->validate([
+            'price' => 'string',
+            'description' => 'string',
+            'tr_type' => 'integer',
+          ]);
+          Ad::where('ID', '=', $id)->update($request->all());
+          return [
             response()->json([
               "message" => "Ad updated successfully"
-            ], 200)
+            ], 200),
+            Ad::find($id)
           ];
+          
         }
 
         else{
@@ -82,14 +85,18 @@ class AdController extends Controller
      */
     public function destroy($id)
     {
-        if(Ad::where('id', $id)->exists()){
-          $ad = Ad::find($id);
-          $ad->delete();
+        if(Ad::where('id', '=', $id)->exists()){
+
+          if(Report::where('ad_id', '=', $id)->exists()){
+            Report::where('ad_id', '=', $id)->delete();
+          }
+          Ad::where('id', '=', $id)->delete();
 
           return response()->json([
-            "message" => "Ad deleted"
+            "message" => "Ad and all its reports deleted"
           ], 202);
         }
+
         else{
           return response()->json([
             "message" => "Ad not found"
@@ -97,7 +104,7 @@ class AdController extends Controller
         }
     }
 
-    public function search($description)
+    public function searchByText($description)
     {
       return Ad::where('description', 'like', '%'.$description.'%')->get();
     }

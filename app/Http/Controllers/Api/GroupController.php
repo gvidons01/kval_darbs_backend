@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\group;
 use App\Models\category;
+use App\Http\Resources\GroupResource;
+use App\Http\Resources\CategoryResource;
 
 class GroupController extends Controller
 {
@@ -15,10 +17,10 @@ class GroupController extends Controller
     }
 
     //display one group and its categories
-    /*public function show($id){
+    public function show($id){
         return [
-          group::find($id);
-          category::all()->where('group_id', '=', $id);
+            new GroupResource(group::findOrFail($id)),
+            CategoryResource::collection(category::all()->where('group_id', '=', $id))
         ];
-    }*/
+    }
 }

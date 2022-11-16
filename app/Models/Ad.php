@@ -18,7 +18,5 @@ class Ad extends Model
       'subcat_id',
     ];
 
-    protected $guarded = [];
-
     protected $table = 'ads';
 }

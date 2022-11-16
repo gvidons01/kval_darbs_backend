@@ -39,12 +39,7 @@ Route::get('/groups', function(){
   return GroupResource::collection(group::all());
 });
 
-Route::get('/group/{id}', function($id){
-  return [
-    new GroupResource(group::findOrFail($id)),
-    CategoryResource::collection(category::all()->where('group_id', '=', $id))
-  ];
-});
+Route::get('/group/{id}', [GroupController::class, 'show']);
 
 //protected routes (only authenticated users!)
 Route::group(['middleware' => ['auth:sanctum']], function () {
