@@ -13,7 +13,7 @@ class GroupController extends Controller
 {
     //display all groups
     public function index(){
-        return group::all();
+        return GroupResource::collection(group::all());
     }
 
     //display one group and its categories

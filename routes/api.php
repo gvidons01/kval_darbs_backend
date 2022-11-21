@@ -8,9 +8,7 @@ use App\Models\category;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GroupController;
-use App\Http\Resources\AdResource;
 use App\Http\Resources\GroupResource;
-use App\Http\Resources\CategoryResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,9 +33,7 @@ Route::get('/ads', [AdController::class, 'index']);
 
 Route::get('/ads/search/{description}', [AdController::class, 'search']);
 
-Route::get('/groups', function(){
-  return GroupResource::collection(group::all());
-});
+Route::get('/groups', [GroupController::class, 'index']);
 
 Route::get('/group/{id}', [GroupController::class, 'show']);
 
@@ -51,3 +47,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   //route to user's profile, update or delete user profile.
   //report routes
 });
+
+//

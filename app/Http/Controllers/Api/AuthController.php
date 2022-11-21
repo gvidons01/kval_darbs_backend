@@ -26,7 +26,7 @@ class AuthController extends Controller
           'fname' => 'required|string',
           'lname' => 'required|string',
           'email' => 'required|email|unique:users,email',
-          'phone_no'=> 'required|string',
+          'phone_no'=> 'required|string|8',
           'password' => 'required|string|confirmed',
         ]);
 
@@ -110,7 +110,9 @@ class AuthController extends Controller
    public function logout(Request $request){
     auth()->user()->tokens()->delete();
     return[
-      'message' => 'logged out'
+      response()->json([
+        'message' => 'logged out'
+      ]),
     ];
    }
 
