@@ -6,8 +6,11 @@ use App\Models\group;
 use App\Models\Ad;
 use App\Models\category;
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GroupController;
+use App\Http\Controllers\Api\UserController;
+
 use App\Http\Resources\GroupResource;
 
 /*
@@ -24,8 +27,6 @@ use App\Http\Resources\GroupResource;
 //public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-
-//Route::resource('ads', AdController::class);
 
 Route::get('/ad/{id}', [AdController::class, 'show']);
 
@@ -45,7 +46,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   Route::post('/logout', [AuthController::class, 'logout']);
   //route to user's profile, update or delete user profile.
+  Route::get('/user', [UserController::class, 'userInfo']);
+  Route::delete('/user', [UserController::class, 'deleteUser']);
+  //Route::put('/user', []);
   //report routes
 });
 
-//
+//admin routes (only admin access)
+Route::get('/admin/reports', [AdminController::class, 'viewReportedAds']);
+Route::get('/admin/report/{id}', [AdminController::class, 'viewAdReports']);
+Route::delete('/admin/report/{id}', [AdminController::class, 'deleteAdReports']);
+Route::get('/admin/reports', [AdminController::class, 'viewReportedAds']);
+Route::get('/admin/blocked', [AdminController::class, 'showBlockedUsers']);
+Route::put('/admin/block/{id}', [AdminController::class, 'changeUserAccess']);

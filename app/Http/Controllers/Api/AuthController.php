@@ -26,8 +26,8 @@ class AuthController extends Controller
           'fname' => 'required|string',
           'lname' => 'required|string',
           'email' => 'required|email|unique:users,email',
-          'phone_no'=> 'required|string|8',
-          'password' => 'required|string|confirmed',
+          'phone_no'=> 'required|string',
+          'password' => 'required|string|confirmed|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
         ]);
 
         if($validateUser->fails()){
