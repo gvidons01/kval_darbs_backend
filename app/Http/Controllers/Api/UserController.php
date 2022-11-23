@@ -10,7 +10,8 @@ use App\Models\Report;
 
 class UserController extends Controller
 {
-    public function updateUser(){
+    //update user info
+    public function updateUser(Request $request){
 
     }
 
@@ -26,7 +27,7 @@ class UserController extends Controller
     }
 
     public function resetPassword(Request $request){
-
+        
     }
 
     public function forgotPassword(){

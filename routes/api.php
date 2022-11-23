@@ -48,14 +48,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   //route to user's profile, update or delete user profile.
   Route::get('/user', [UserController::class, 'userInfo']);
   Route::delete('/user', [UserController::class, 'deleteUser']);
-  //Route::put('/user', []);
+  Route::put('/user', [UserController::class, 'updateUser']);
+  Route::put('/user/updatepw', [UserController::class, 'resetPassword']);
   //report routes
+
+  //admin routes (only admin access, every function has an admin role check)
+  Route::get('/admin/reports', [AdminController::class, 'viewReportedAds']);
+  Route::get('/admin/report/{id}', [AdminController::class, 'viewAdReports']);
+  Route::delete('/admin/report/{id}', [AdminController::class, 'deleteAdReports']);
+  Route::get('/admin/reports', [AdminController::class, 'viewReportedAds']);
+  Route::get('/admin/blocked', [AdminController::class, 'showBlockedUsers']);
+  Route::put('/admin/block/{id}', [AdminController::class, 'changeUserAccess']);
 });
 
-//admin routes (only admin access)
-Route::get('/admin/reports', [AdminController::class, 'viewReportedAds']);
-Route::get('/admin/report/{id}', [AdminController::class, 'viewAdReports']);
-Route::delete('/admin/report/{id}', [AdminController::class, 'deleteAdReports']);
-Route::get('/admin/reports', [AdminController::class, 'viewReportedAds']);
-Route::get('/admin/blocked', [AdminController::class, 'showBlockedUsers']);
-Route::put('/admin/block/{id}', [AdminController::class, 'changeUserAccess']);

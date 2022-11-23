@@ -11,8 +11,9 @@ use App\Models\Report;
 class AdminController extends Controller
 {
     //block or restore authorized access to one user
-    public function changeUserAccess(User $user){
-        if(Auth::user()['is_admin'] == '1'){
+    public function changeUserAccess($id){
+        if(Auth::user()->is_admin){
+            $user=User::where('id', $id);
             if($user->is_blocked){
                 $user->is_blocked = '0';
                 $user->save();
@@ -27,17 +28,15 @@ class AdminController extends Controller
                 "message" => "User access is blocked"
               ], 200);
         }
-        abort(403);
         return response()->json([
             'message' => 'You dont have admin permissions!'
         ], 200);
     }
 
     public function viewReportedAds(){
-        if(Auth::user()['is_admin'] == '1'){
+        if(Auth::user()->is_admin){
             return Ad::all()->where(Report::where('ad_id', '=', 'Ad.id')->exists());
         }
-        abort(403);
         return response()->json([
             'message' => 'You dont have admin permissions!'
         ], 200);
@@ -45,7 +44,7 @@ class AdminController extends Controller
 
     //show all reports to one ad
     public function viewAdReports($id){
-        if(Auth::user()['is_admin'] == '1'){
+        if(Auth::user()->is_admin){
             if(Ad::where('id', '=', $id)->exists()){
                 if(Report::where('ad_id', '=', $id)->exists()){
                   return Report::all()->where('ad_id', '=', $id);
@@ -58,7 +57,6 @@ class AdminController extends Controller
                 'message' => 'No ad found'
             ], 200);
         }
-        abort(403);
         return response()->json([
             'message' => 'You dont have admin permissions!'
         ], 200);
@@ -66,7 +64,7 @@ class AdminController extends Controller
 
     //delete all reports for one ad
     public function deleteAdReports($id){
-        if(Auth::user()['is_admin'] == '1'){
+        if(Auth::user()->is_admin){
             if(Ad::where('id', '=', $id)->exists()){
                 if(Report::where('ad_id', '=', $id)->exists()){
                     Report::where('ad_id', '=', $id)->delete();
@@ -79,7 +77,6 @@ class AdminController extends Controller
                 'message' => 'No reports found'
             ], 200);
         }
-        abort(403);
         return response()->json([
             'message' => 'You dont have admin permissions!'
         ], 200);
@@ -87,7 +84,7 @@ class AdminController extends Controller
 
     //delete any ad with its reports
     public function deleteAnyAd($id){
-        if(Auth::user()['is_admin'] == '1'){
+        if(Auth::user()->is_admin){
             if(Ad::where('id', '=', $id)->exists()){
 
                 if(Report::where('ad_id', '=', $id)->exists()){
@@ -106,17 +103,15 @@ class AdminController extends Controller
                 ], 404);
             }
         }
-        abort(403);
         return response()->json([
             'message' => 'You dont have admin permissions!'
         ], 200);
     }
 
     public function showBlockedUsers(){
-        if(Auth::user()['is_admin'] == '1'){
+        if(Auth::user()->is_admin){
             return User::all()->where('is_blocked', '=', '1');
         }
-        abort(403);
         return response()->json([
             'message' => 'You dont have admin permissions!'
         ], 200);

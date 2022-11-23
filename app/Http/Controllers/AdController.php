@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Ad;
 use App\Models\Report;
+use Illuminate\Support\Facades\Auth;
 
 class AdController extends Controller
 {
@@ -55,18 +56,24 @@ class AdController extends Controller
     public function update(Request $request, $id)
     {
         if(Ad::where('ID', '=', $id)->exists()){
-          $request->validate([
-            'price' => 'string',
-            'description' => 'string',
-            'tr_type' => 'integer',
-          ]);
-          Ad::where('ID', '=', $id)->update($request->all());
-          return [
-            response()->json([
-              "message" => "Ad updated successfully"
-            ], 200),
-            Ad::find($id)
-          ];
+          $ad = Ad::where('ID', '=', $id)->first();
+          if($ad->user_id == Auth::user()->id){
+            $request->validate([
+              'price' => 'string',
+              'description' => 'string',
+              'tr_type' => 'integer',
+            ]);
+            Ad::where('ID', '=', $id)->update($request->all());
+            return [
+              response()->json([
+                "message" => "Ad updated successfully"
+              ], 200),
+              Ad::find($id)
+            ];
+          }
+          return response()->json([
+            "message" => "Ad is not yours"
+          ], 200);
           
         }
 
@@ -86,14 +93,19 @@ class AdController extends Controller
     public function destroy($id)
     {
         if(Ad::where('id', '=', $id)->exists()){
-
-          if(Report::where('ad_id', '=', $id)->exists()){
-            Report::where('ad_id', '=', $id)->delete();
+          $ad = Ad::where('ID', '=', $id)->first();
+          if($ad->user_id == Auth::user()->id){
+            if(Report::where('ad_id', '=', $id)->exists()){
+              Report::where('ad_id', '=', $id)->delete();
+            }
+            Ad::where('id', '=', $id)->delete();
+  
+            return response()->json([
+              "message" => "Ad and all its reports deleted"
+            ], 202);
           }
-          Ad::where('id', '=', $id)->delete();
-
           return response()->json([
-            "message" => "Ad and all its reports deleted"
+            "message" => "Ad is not yours to delete"
           ], 202);
         }
 
