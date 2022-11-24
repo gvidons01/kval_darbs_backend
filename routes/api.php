@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::post('/ads', [AdController::class, 'store']);
   Route::put('/ad/{id}', [AdController::class, 'update']);
   Route::delete('/ad/{id}', [AdController::class, 'destroy']);
+  Route::get('/myads', [AdController::class, 'showOwnAds']);
 
   Route::post('/logout', [AuthController::class, 'logout']);
   //route to user's profile, update or delete user profile.

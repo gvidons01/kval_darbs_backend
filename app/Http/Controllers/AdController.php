@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class AdController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all ads.
      *
      * @return \Illuminate\Http\Response
      */
@@ -20,7 +20,7 @@ class AdController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created ad in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -36,7 +36,7 @@ class AdController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified ad.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -47,7 +47,7 @@ class AdController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified ad in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -85,7 +85,7 @@ class AdController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified ad from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -119,5 +119,15 @@ class AdController extends Controller
     public function searchByText($description)
     {
       return Ad::where('description', 'like', '%'.$description.'%')->get();
+    }
+
+    //Display all ads created by the authenticated user
+    public function showOwnAds(){
+      if(Ad::where('user_id', '=', Auth::user()->id)->exists()){
+        return Ad::all()->where('user_id', '=', Auth::user()->id);
+      }
+      return response()->json([
+        "message" => "You don't have any ads yet!"
+      ], 404);
     }
 }
