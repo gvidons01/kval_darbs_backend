@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Ad;
 use App\Models\Report;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\AdResource;
 
 class AdController extends Controller
 {
@@ -25,14 +27,23 @@ class AdController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $request->validate([
           'price' => 'required|string',
           'description' => 'required|string',
-          'tr_type' => 'required|integer',
+          'tr_type' => 'required|string',
+          'group_id' => 'required|integer|min:1|max:10',
+          'category_id' => 'required|integer|min:1',
+          'subcat_id' => 'required|integer|min:1',
         ]);
-        return Ad::create($request->all());
+        $request['user_id'] = Auth::user()->id;
+        $request['expires_at'] = now()->addDays(30); //Ads are active for 30 days
+        return [
+          Ad::create($request->all()),
+          response()->json([
+            "message" => "Ad created successfully!"
+          ], 200)
+        ];
     }
 
     /**
@@ -63,6 +74,7 @@ class AdController extends Controller
               'description' => 'string',
               'tr_type' => 'integer',
             ]);
+            $request['expires_at'] = now()->addDays(30); //Updating an ad resets expiry time
             Ad::where('ID', '=', $id)->update($request->all());
             return [
               response()->json([
@@ -118,13 +130,13 @@ class AdController extends Controller
 
     public function searchByText($description)
     {
-      return Ad::where('description', 'like', '%'.$description.'%')->get();
+      return Ad::select('description', 'price')->where('description', 'like', '%'.$description.'%')->get();
     }
 
     //Display all ads created by the authenticated user
     public function showOwnAds(){
       if(Ad::where('user_id', '=', Auth::user()->id)->exists()){
-        return Ad::all()->where('user_id', '=', Auth::user()->id);
+        return Ad::select()->where('user_id', '=', Auth::user()->id);
       }
       return response()->json([
         "message" => "You don't have any ads yet!"

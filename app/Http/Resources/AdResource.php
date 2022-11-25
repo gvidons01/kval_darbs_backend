@@ -18,11 +18,12 @@ class AdResource extends JsonResource
           'id' => $this->id,
           'group_id' => $this->group_id,
           'category_id' => $this->category_id,
-          'sub-cat_id' => $this->subcat_id,
+          'subcat_id' => $this->subcat_id,
           'user_id' => $this->user_id,
           'description' => $this->description,
           'tr_type' => $this->tr_type,
           'price' => $this->price,
+          'expires_at' => $this->expires_at,
         ];
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\ReportController;
 
 use App\Http\Resources\GroupResource;
 
@@ -46,12 +47,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('/myads', [AdController::class, 'showOwnAds']);
 
   Route::post('/logout', [AuthController::class, 'logout']);
+
   //route to user's profile, update or delete user profile.
   Route::get('/user', [UserController::class, 'userInfo']);
   Route::delete('/user', [UserController::class, 'deleteUser']);
   Route::put('/user', [UserController::class, 'updateUser']);
   Route::put('/user/updatepw', [UserController::class, 'resetPassword']);
+
   //report routes
+  Route::post('/ad/{id}/report', [ReportController::class, 'reportAd']);
 
   //admin routes (only admin access, every function has an admin role check)
   Route::get('/admin/reports', [AdminController::class, 'viewReportedAds']);

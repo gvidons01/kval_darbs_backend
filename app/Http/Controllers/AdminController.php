@@ -13,8 +13,8 @@ class AdminController extends Controller
     //block or restore authorized access to one user
     public function changeUserAccess($id){
         if(Auth::user()->is_admin){
-            $user=User::where('id', $id);
-            if($user->is_blocked){
+            $user=User::where('id', $id)->first();
+            if($user->is_blocked == '1'){
                 $user->is_blocked = '0';
                 $user->save();
                 return response()->json([
