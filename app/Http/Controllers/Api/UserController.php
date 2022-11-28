@@ -30,10 +30,6 @@ class UserController extends Controller
         
     }
 
-    public function forgotPassword(){
-        
-    }
-
     public function userInfo(Request $request){
         return $request->user();
     }

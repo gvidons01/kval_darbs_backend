@@ -80,8 +80,9 @@ class AuthController extends Controller
                'message' => 'validation error',
                'errors' => $validateUser->errors()
            ], 401);
-       }
+        }
 
+        //case if the email and/or password is incorrect
         if(!Auth::attempt($request->only(['email', 'password']))){
             return response()->json([
                 'status' => false,
@@ -89,7 +90,15 @@ class AuthController extends Controller
            ], 401);
         }
 
-       $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
+        
+        //check if the user is blocked before giving the token
+        if($user->is_blocked == '1'){
+          return response()->json([
+            'status' => false,
+            'message' => 'This user is blocked from accessing the system'
+          ], 200);
+        }
 
        return response()->json([
            'status' => true,

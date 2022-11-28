@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Ad;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\group;
+use App\Models\category;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\AdResource;
 
@@ -130,13 +132,18 @@ class AdController extends Controller
 
     public function searchByText($description)
     {
-      return Ad::select('description', 'price')->where('description', 'like', '%'.$description.'%')->get();
+      return Ad::select('description', 'price')
+      ->join('')
+      ->where('description', 'like', '%'.$description.'%')
+      ->get();
     }
 
     //Display all ads created by the authenticated user
     public function showOwnAds(){
       if(Ad::where('user_id', '=', Auth::user()->id)->exists()){
-        return Ad::select()->where('user_id', '=', Auth::user()->id);
+        return Ad::select()
+        ->where('user_id', '=', Auth::user()->id)
+        ->groupBy('category_id');
       }
       return response()->json([
         "message" => "You don't have any ads yet!"
