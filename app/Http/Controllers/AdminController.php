@@ -14,19 +14,25 @@ class AdminController extends Controller
     public function changeUserAccess($id){
         if(Auth::user()->is_admin){
             $user=User::where('id', $id)->first();
-            if($user->is_blocked == '1'){
-                $user->is_blocked = '0';
+            if($user->is_admin == '0'){
+                if($user->is_blocked == '1'){
+                    $user->is_blocked = '0';
+                    $user->save();
+                    return response()->json([
+                        "message" => "User access is restored"
+                    ], 200);
+                }
+
+                $user->is_blocked = '1';
                 $user->save();
                 return response()->json([
-                    "message" => "User access is restored"
-                  ], 200);
+                    "message" => "User access is blocked"
+                ], 200);
             }
-
-            $user->is_blocked = '1';
-            $user->save();
             return response()->json([
-                "message" => "User access is blocked"
-              ], 200);
+                "message" => "You can't block another admin"
+            ], 200);
+            
         }
         return response()->json([
             'message' => 'You dont have admin permissions!'
@@ -86,7 +92,6 @@ class AdminController extends Controller
     public function deleteAnyAd($id){
         if(Auth::user()->is_admin){
             if(Ad::where('id', '=', $id)->exists()){
-
                 if(Report::where('ad_id', '=', $id)->exists()){
                   Report::where('ad_id', '=', $id)->delete();
                 }

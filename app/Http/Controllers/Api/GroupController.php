@@ -20,7 +20,7 @@ class GroupController extends Controller
     public function show($id){
         return [
             new GroupResource(group::findOrFail($id)),
-            CategoryResource::collection(category::where('group_id', '=', $id))
+            CategoryResource::collection(category::all()->where('group_id', '=', $id))
         ];
     }
 }

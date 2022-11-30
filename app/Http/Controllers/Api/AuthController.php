@@ -91,7 +91,7 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
-        
+
         //check if the user is blocked before giving the token
         if($user->is_blocked == '1'){
           return response()->json([
@@ -123,6 +123,10 @@ class AuthController extends Controller
         'message' => 'logged out'
       ]),
     ];
+   }
+
+   public function forgotPassword(){
+    
    }
 
 }
