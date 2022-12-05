@@ -43,7 +43,7 @@ class AuthController extends Controller
             'lname' => $request->lname,
             'email' => $request->email,
             'phone_no' => $request->phone_no,
-            'password' => bcrypt($request->password)
+            'password' => Hash::make($request->password)
         ]);
 
         return response()->json([

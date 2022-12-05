@@ -28,6 +28,7 @@ use App\Http\Resources\GroupResource;
 //public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/forgotpw', [AuthController::class, 'forgotPassword']);
 
 Route::get('/ad/{id}', [AdController::class, 'show']);
 
@@ -38,6 +39,8 @@ Route::get('/ads/search/{description}', [AdController::class, 'search']);
 Route::get('/groups', [GroupController::class, 'index']);
 
 Route::get('/group/{id}', [GroupController::class, 'show']);
+
+Route::get('/category/{id}', []);
 
 //protected routes (only authenticated users!)
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -52,9 +55,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('/user', [UserController::class, 'userInfo']);
   Route::delete('/user', [UserController::class, 'deleteUser']);
   Route::put('/user', [UserController::class, 'updateUser']);
-  Route::put('/user/updatepw', [UserController::class, 'resetPassword']);
+  Route::post('/user/updatepw', [UserController::class, 'updatePassword']);
 
   //report routes
+  Route::get('/ad/{id}/reports', [ReportController::class, 'showReports']);
   Route::post('/ad/{id}/report', [ReportController::class, 'reportAd']);
 
   //admin routes (only admin access, every function has an admin role check)

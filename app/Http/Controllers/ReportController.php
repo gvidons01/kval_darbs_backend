@@ -11,7 +11,18 @@ use App\Models\User;
 class ReportController extends Controller
 {
     public function showReports($id){
-        
+        if(Ad::where('id', $id)->exists()){
+            if(Report::where('ad_id', $id)->exists()){
+                return Report::all()->where('ad_id', $id);
+            }
+            return response()->json([
+                "message" => "No reports found!!"
+            ], 404);
+        }
+
+        return response()->json([
+            "message" => "Ad not found"
+        ], 404);
     }
 
     public function reportAd(Request $request, $id){
