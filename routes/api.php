@@ -32,15 +32,15 @@ Route::post('/forgotpw', [AuthController::class, 'forgotPassword']);
 
 Route::get('/ad/{id}', [AdController::class, 'show']);
 
-Route::get('/ads', [AdController::class, 'index']);
+Route::get('subcat/{id}', [AdController::class, 'showAds']);
 
-Route::get('/ads/search/{description}', [AdController::class, 'search']);
+Route::get('/search/{description}', [AdController::class, 'search']);
 
 Route::get('/groups', [GroupController::class, 'index']);
 
 Route::get('/group/{id}', [GroupController::class, 'show']);
 
-Route::get('/category/{id}', []);
+Route::get('/category/{id}', [GroupController::class, 'showSub']);
 
 //protected routes (only authenticated users!)
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   Route::post('/logout', [AuthController::class, 'logout']);
 
-  //route to user's profile, update or delete user profile.
+  //route to user's profile, update or delete user profile, change user password.
   Route::get('/user', [UserController::class, 'userInfo']);
   Route::delete('/user', [UserController::class, 'deleteUser']);
   Route::put('/user', [UserController::class, 'updateUser']);

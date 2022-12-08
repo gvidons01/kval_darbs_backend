@@ -18,9 +18,9 @@ class AdController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function showAds($id)
     {
-        return Ad::all();
+        return Ad::all()->where('subcat_id', $id);
     }
 
     /**
