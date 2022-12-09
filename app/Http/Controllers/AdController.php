@@ -20,7 +20,15 @@ class AdController extends Controller
      */
     public function showAds($id)
     {
-        return Ad::all()->where('subcat_id', $id);
+      if(Ad::where('subcat_id', $id)->exists()){
+        return AdResource::collection(Ad::all()->where('subcat_id', $id));
+      }
+      
+      else{
+        return response()->json([
+          "message" => "No ads found for this subcategory!"
+        ], 200);
+      }
     }
 
     /**

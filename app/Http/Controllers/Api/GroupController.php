@@ -10,6 +10,7 @@ use App\Models\subcat;
 use App\Models\Ad;
 use App\Http\Resources\GroupResource;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\SubcategoryResource;
 
 class GroupController extends Controller
 {
@@ -31,7 +32,7 @@ class GroupController extends Controller
         if(subcat::where('category_id', '=', $id)->exists()){
             return [
                 new CategoryResource(category::findOrFail($id)),
-                subcat::all()->where('category_id', '=', $id)
+                SubcategoryResource::collection(subcat::all()->where('category_id', '=', $id))
             ];
         }
         elseif(Ad::where('category_id', '=', $id)->exists()){
