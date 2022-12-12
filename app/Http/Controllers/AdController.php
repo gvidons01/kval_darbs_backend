@@ -8,8 +8,13 @@ use App\Models\Report;
 use App\Models\User;
 use App\Models\group;
 use App\Models\category;
+use App\Models\subcat;
+use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\AdResource;
+use App\Http\Resources\SubcategoryResource;
+use App\Http\Resources\ImageResource;
+use App\Http\Resources\UserResource;
 
 class AdController extends Controller
 {
@@ -21,7 +26,10 @@ class AdController extends Controller
     public function showAds($id)
     {
       if(Ad::where('subcat_id', $id)->exists()){
-        return AdResource::collection(Ad::all()->where('subcat_id', $id));
+        return [
+          new SubcategoryResource(subcat::findOrFail($id)),
+          AdResource::collection(Ad::all()->where('subcat_id', $id)),
+        ];
       }
       
       else{
@@ -64,7 +72,18 @@ class AdController extends Controller
      */
     public function show($id)
     {
-        return Ad::find($id);
+        if(Ad::where('ID', $id)->exists()){
+          $ad = Ad::where('ID', $id)->first();
+          //$user = User::where('id', $ad->user_id)->first();
+          return[
+            new AdResource($ad),
+            ImageResource::collection(Image::all()->where('ad_id', $id)),
+            new UserResource(User::where('id', $ad->user_id)->first()),
+          ];
+        }
+        return response()->json([
+          "message" => "Ad not found"
+        ], 404);
     }
 
     /**
