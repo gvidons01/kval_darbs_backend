@@ -138,6 +138,9 @@ class AdController extends Controller
             if(Report::where('ad_id', '=', $id)->exists()){
               Report::where('ad_id', '=', $id)->delete();
             }
+            if(Image::where('ad_id', $id)->exists()){
+              Image::where('ad_id', $id)->delete();
+            }
             Ad::where('ID', '=', $id)->delete();
   
             return response()->json([
