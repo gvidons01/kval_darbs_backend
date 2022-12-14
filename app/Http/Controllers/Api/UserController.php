@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Ad;
 use App\Models\Report;
+use App\Models\Image;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,11 +17,16 @@ class UserController extends Controller
 {
     //update user info
     public function updateUser(Request $request){
-
+        
     }
 
-    //delete own user with all ads, reports and access tokens
+    //delete own user with all user's ads, reports to those ads, reports by user and access tokens
     public function deleteUser(Request $request){
+        $ads = Ad::all()->where('user_id', '=', $request->user()->id);
+        foreach ($ads as $ad){
+            Report::where('ad_id', $ad->ID)->delete();
+            Image::where('ad_id', $ad->ID)->delete();
+        }
         Ad::where('user_id', '=', $request->user()->id)->delete();
         Report::where('user_id', '=', $request->user()->id)->delete();
         auth()->user()->tokens()->delete();

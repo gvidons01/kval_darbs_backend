@@ -74,7 +74,6 @@ class AdController extends Controller
     {
         if(Ad::where('ID', $id)->exists()){
           $ad = Ad::where('ID', $id)->first();
-          //$user = User::where('id', $ad->user_id)->first();
           return[
             new AdResource($ad),
             ImageResource::collection(Image::all()->where('ad_id', $id)),
@@ -133,13 +132,13 @@ class AdController extends Controller
      */
     public function destroy($id)
     {
-        if(Ad::where('id', '=', $id)->exists()){
+        if(Ad::where('ID', '=', $id)->exists()){
           $ad = Ad::where('ID', '=', $id)->first();
           if($ad->user_id == Auth::user()->id){
             if(Report::where('ad_id', '=', $id)->exists()){
               Report::where('ad_id', '=', $id)->delete();
             }
-            Ad::where('id', '=', $id)->delete();
+            Ad::where('ID', '=', $id)->delete();
   
             return response()->json([
               "message" => "Ad and all its reports deleted"

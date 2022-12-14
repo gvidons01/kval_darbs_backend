@@ -14,6 +14,8 @@ class AdminController extends Controller
     public function changeUserAccess($id){
         if(Auth::user()->is_admin){
             $user=User::where('id', $id)->first();
+
+            //Admins can't block other admins
             if($user->is_admin == '0'){
                 if($user->is_blocked == '1'){
                     $user->is_blocked = '0';
@@ -39,6 +41,7 @@ class AdminController extends Controller
         ], 200);
     }
 
+    //View a list of ads which have at least 1 report
     public function viewReportedAds(){
         if(Auth::user()->is_admin){
             return Ad::all()->where(Report::where('ad_id', '=', 'Ad.id')->exists());
@@ -113,6 +116,7 @@ class AdminController extends Controller
         ], 200);
     }
 
+    //Show a list of users who are blocked from accessing the system
     public function showBlockedUsers(){
         if(Auth::user()->is_admin){
             return User::all()->where('is_blocked', '=', '1');
