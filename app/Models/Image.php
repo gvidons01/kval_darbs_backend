@@ -14,5 +14,7 @@ class Image extends Model
         'image',
       ];
   
-      protected $table = 'images';
+    public $timestamps = false;
+
+    protected $table = 'images';
 }

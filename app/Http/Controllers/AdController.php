@@ -11,10 +11,13 @@ use App\Models\category;
 use App\Models\subcat;
 use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use App\Http\Resources\AdResource;
 use App\Http\Resources\SubcategoryResource;
 use App\Http\Resources\ImageResource;
 use App\Http\Resources\UserResource;
+
+use Pic;
 
 class AdController extends Controller
 {
@@ -53,15 +56,41 @@ class AdController extends Controller
           'group_id' => 'required|integer|min:1|max:10',
           'category_id' => 'required|integer|min:1',
           'subcat_id' => 'required|integer|min:1',
+          'image' => 'required|image|max:2048',
         ]);
+
+        $image_file = $request->image;
+        $image = Pic::make($image_file);
+        Response::make($image->encode('jpg'));
+
         $request['user_id'] = Auth::user()->id;
         $request['expires_at'] = now()->addDays(30); //Ads are active for 30 days
-        return [
-          Ad::create($request->all()),
-          response()->json([
-            "message" => "Ad created successfully!"
-          ], 200)
-        ];
+
+        $ad = Ad::create($request->only(['price', 'description', 'tr_type','user_id', 'group_id', 'category_id', 'subcat_id']));
+        $request['ad_id'] = $ad->id;
+
+        $image_form = array(
+          'ad_id' => $ad->id,
+          'image' => $image
+        );
+        
+        Image::create($image_form);
+
+        if($ad != null && $image != null){
+          return [
+            response()->json([
+              "message" => "Ad created successfully!"
+            ], 200)
+          ];
+        }
+
+        else{
+          return [
+            response()->json([
+              "message" => "Error!"
+            ], 200)
+          ];
+        }
     }
 
     /**
