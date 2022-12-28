@@ -17,7 +17,17 @@ class UserController extends Controller
 {
     //update user info
     public function updateUser(Request $request){
-        
+        $request->validate([
+            'fname' => 'string',
+            'lname' => 'string',
+            'phone_no' => 'string',
+        ]);
+        return [
+            User::where('id', Auth::user()->id)->update($request->all()),
+            response()->json([
+                "message" => "User info updated!"
+            ], 200)
+        ];
     }
 
     //delete own user with all user's ads, reports to those ads, reports by user and access tokens
@@ -38,26 +48,6 @@ class UserController extends Controller
 
     //Change password, if user remembers the old one, but wants to change
     public function updatePassword(Request $request){
-        /*$request->validate([
-            'old_pw' => 'required',
-            'new_pw' => 'required|min:9',
-            'new_pw_confirm' => 'required|same:new_pw',
-        ]);
-
-        if(!Hash::check($request->old_pw, Auth::user()->password)){
-            return response()->json([
-                "message" => "Old password doesn't match!"
-            ], 200);
-        }
-
-        User::whereId(Auth::user()->id)->update([
-            'password' => Hash::make($request->new_pw)
-        ]);
-
-        return response()->json([
-            "message" => "Password changed successfully!"
-        ], 200);*/
-
         $input = $request->all();
         $userid = Auth::user()->id;
         $rules = array(

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Ad;
 use App\Models\Report;
+use App\Models\Image;
 
 class AdminController extends Controller
 {
@@ -98,6 +99,7 @@ class AdminController extends Controller
                 if(Report::where('ad_id', '=', $id)->exists()){
                   Report::where('ad_id', '=', $id)->delete();
                 }
+                Image::where('ad_id', $id)->delete();
                 Ad::where('id', '=', $id)->delete();
       
                 return response()->json([
