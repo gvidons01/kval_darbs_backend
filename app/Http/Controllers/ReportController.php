@@ -34,7 +34,7 @@ class ReportController extends Controller
             $request['user_id'] = Auth::user()->id;
             $request['created_at'] = now();
             return [
-                Report::create($request->all()),
+                Report::create($request->only('reason', 'ad_id', 'user_id', 'created_at')),
                 response()->json([
                     "message" => "Ad is reported!"
                 ], 404),

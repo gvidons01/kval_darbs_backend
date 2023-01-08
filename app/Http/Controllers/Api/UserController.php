@@ -52,7 +52,7 @@ class UserController extends Controller
         $userid = Auth::user()->id;
         $rules = array(
             'old_password' => 'required',
-            'new_password' => 'required|min:6',
+            'new_password' => 'required|min:9|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
             'confirm_password' => 'required|same:new_password',
         );
         $validator = Validator::make($input, $rules);
